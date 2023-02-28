@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!-- 引用thymeleaf模板引擎 -->
+<html xmlns:th="http://www.thymeleaf.org" class="h-100">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>商品介紹</title>
+	<!-- 引用Bootstrap -->
+	<link rel="stylesheet" href="assets/dist/css/bootstrap.min.css">
+	<script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- 引用jQuery -->
+	<script src="scripts/jquery.min.js"></script>
+	<script src="scripts/jquery.cookie.js"></script>
+	<!-- 引用外部javascript -->
+	<script src="scripts/GetCookie.js"></script>
+	<script src="scripts/SetCookie.js"></script>
+	<!-- 下拉式選單 -->
+	<script src="scripts/popper.min.js"></script>
+	<!-- Bootstrap時間挑選器 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
+	<!-- 彈跳視窗樣式 -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="sweetalert2.all.min.js"></script>
+	<style>
+		body{
+			background-color:rgba(225,245,241,0.947);
+			/*
+            background-image:url("images/back.png");
+            background-size:cover;
+            background-repeat:repeat no-repeat;
+            */
+        }
+        #nav{
+        	height:6%;
+        }
+        #align_center{
+            margin-top:75px;
+            text-align:center;
+        }
+	</style>
+</head>
+<body class="d-flex flex-column h-100" th:with="itemID=${itemID}, orderID=${orderID}">
+	<!-- 標題導覽列 -->
+	<header>
+		<nav class="navbar navbar-expand navbar-dark fixed-top bg-dark" id="nav">
+			<div class="container-fluid">
+      			<div class="navbar">
+      				<span class="navbar-brand">商品介紹</span>
+      			</div>
+    		</div>
+		</nav>
+	</header>
+	<!-- 顯示商品內容 -->
+	<div class="container" id="align_center" th:object="${ThisRow}">
+		<div class="row">
+			<div class="col-12 col-lg-5" th:with="imgsrc=${imgsrc}"><!-- 顯示圖片 -->
+				<img th:src="${imgsrc}" width="100%" height="95%" class="rounded">
+			</div><!-- col-12 col-lg-5 -->
+			<div class="col-0 col-lg-1"></div><!-- 空白部分 -->
+			<div class="col-12 col-lg-6"><!-- 顯示商品文字資訊 -->
+				<span th:utext="${ThisRow.get_description()}"></span>
+				<table class="table table-bordered">
+                	<thead>
+                    	<tr>
+                        	<th scope="col">1個月</th>
+                        	<th scope="col">6個月</th>
+                        	<th scope="col">12個月</th>
+                    	</tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        	<th scope="row" th:text="${#numbers.formatInteger(ThisRow.get_cost()/ThisRow.get_life_month()*1,1)}+'元'"></th>
+                          	<th scope="row" th:text="${#numbers.formatInteger(ThisRow.get_cost()/ThisRow.get_life_month()*6,1)}+'元'"></th>
+                          	<th scope="row" th:text="${#numbers.formatInteger(ThisRow.get_cost()/ThisRow.get_life_month()*12,1)}+'元'"></th>            
+                        </tr>
+                    </tbody>
+                </table>
+			</div><!-- col-12 col-lg-6 -->
+		</div><!-- row -->
+	</div><!-- align_center -->
+	<br>
+	<!-- 下方狀態列和相關按鈕 -->
+	<div class="container">
+		<div class="row page-section justify-content-center align-items-center">
+			<div class="col-5" style="text-align:center;" th:with="status=${status}, retire=${ThisRow.get_retire()}"><!-- 顯示出租狀態與隱藏加入購物車 -->
+				<div th:if="${retire.equals('yes')}">
+					<h3 style="color:red;" align="center">出租狀態: 已報廢</h3>
+				</div>
+				<div th:unless="${retire.equals('yes')}">
+					<h3 th:if="${status.equals('ok')}" style="color:blue;" align="center">出租狀態: 可出租</h3>
+					<h4 th:unless="${status.equals('ok')}" style="color:red;" align="center">出租狀態: 出租中</h4>
+					<h4 th:unless="${status.equals('ok')}" align="center" th:text="'結束時間: '+${MaxEnd}"></h4>
+				</div>
+			</div><!-- col-5 -->
+			<div class="col-1"></div><!-- 空白部分 -->
+			<div class="col-2" align="center">
+				<button type="button" class="btn btn-warning" th:id="AddCart" id="AddCart">加入購物車</button>
+				<script th:inline="javascript">
+					/*<![CDATA[*/
+            		/*點擊按鈕後就會新增cookie，並且跳出視窗提示使用者*/
+            		var orderID=/*[[${orderID}]]*/"No static html";
+					var itemID=/*[[${itemID}]]*/"No static html";
+            		$("#AddCart").click(function(){
+            			document.cookie=orderID+"="+itemID;
+			        });
+            		$("#AddCart").click(function(){
+            			/*sweetalert2彈跳視窗樣式*/
+            			Swal.fire({
+            				title:"已加入購物車",
+            				icon:"success",
+            				showConfirmButton:false,
+            				timer:1500
+            			});
+			        });
+            		/*<![CDATA[*/
+            	</script>
+			</div><!-- col-2 -->
+			<div class="col-2" align="center">
+            	<button type="button" class="btn btn-warning" th:id="GoBack" id="GoBack">繼續購物</button>
+            	<script th:inline="javascript">
+					/*<![CDATA[*/
+            		$("#GoBack").click(function(){
+            			window.location.assign(/*[[@{/products}]]*/);
+			        });
+            		/*<![CDATA[*/
+            	</script>
+            </div><!-- 對應到col-2 -->
+            <div class="col-2" align="center">
+            	<button type="button" class="btn btn-warning" th:id="ToCart" id="ToCart">前往購物車</button>
+            	<script th:inline="javascript">
+					/*<![CDATA[*/
+            		$("#ToCart").click(function(){
+            			window.location.assign(/*[[@{/cart}]]*/);
+			        });
+            		/*<![CDATA[*/
+            	</script>
+            </div><!-- 對應到col-2 -->
+		</div><!-- row page-section -->
+	</div><!-- container -->
+	<script th:inline="javascript" th:with="status=${status}, retire=${ThisRow.get_retire()}">
+		/*<![CDATA[*/
+		var retire=/*[[${retire}]]*/"yes";
+		var hidebutton=/*[[${status}]]*/"no";
+		if((retire=="yes")||(hidebutton=="no")){
+			$(document).ready(function(){
+				$("#AddCart").attr("disabled",true);/*如果狀態為已報廢或是出租中，那就把按鍵停用*/
+    		});
+		}
+		/*<![CDATA[*/
+	</script>
+</body>
+</html>

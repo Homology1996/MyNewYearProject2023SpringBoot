@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!-- 引用thymeleaf模板引擎 -->
+<html xmlns:th="http://www.thymeleaf.org" class="h-100">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>商品退租</title>
+	<!-- 引用Bootstrap -->
+	<link rel="stylesheet" href="assets/dist/css/bootstrap.min.css">
+	<script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- 引用jQuery -->
+	<script src="scripts/jquery.min.js"></script>
+	<script src="scripts/jquery.cookie.js"></script>
+	<!-- 引用外部javascript -->
+	<script src="scripts/GetCookie.js"></script>
+	<script src="scripts/SetCookie.js"></script>
+	<!-- 下拉式選單 -->
+	<script src="scripts/popper.min.js"></script>
+	<!-- Bootstrap時間挑選器 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
+	<!-- 彈跳視窗樣式 -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="sweetalert2.all.min.js"></script>
+	<style>
+		body{
+			background-color:rgba(225,245,241,0.947);
+			/*
+            background-image:url("images/back.png");
+            background-size:cover;
+            background-repeat:repeat no-repeat;
+            */
+        }
+        #div_all{
+        	margin-top:75px;
+        }
+	</style>
+</head>
+<body class="d-flex flex-column h-100">
+	<!-- 標題導覽列 -->
+	<header>
+		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+			<div class="container-fluid">
+      			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        			<span class="navbar-toggler-icon"></span>
+      			</button>
+      			<div class="collapse navbar-collapse" id="navbarCollapse">
+      				<span class="navbar-brand">退租</span>
+        			<ul class="navbar-nav me-auto mb-0 mb-md-0">
+          				<li class="nav-item">
+            				<a class="nav-link" aria-current="page" th:href="@{/}">返回首頁</a>
+          				</li>
+          				<li class="nav-item">
+            				<a class="nav-link" th:href="@{/login}">會員中心</a>
+          				</li>
+        			</ul>
+      			</div><!-- collapse -->
+    		</div><!-- container-fluid -->
+		</nav>
+	</header>
+	<div class="container" id="div_all" th:with="order_name=${order_name}, item_index=${item_index}, item_rent_time=${item_rent_time},
+	start=${start}, end=${end}, price=${price}, AlterStart=${AlterStart}">
+		<div class="row">
+			<div class="col-12 col-md-12">
+				<!-- 查詢本次售後服務訂單 -->
+				<table class="table">
+					<tr>
+						<th>訂單編號</th>
+						<th>商品編號</th>
+						<th>出租時間</th>
+						<th>起始時間</th>
+						<th>結束時間</th>
+						<th>出租金額</th>
+					</tr>
+					<tr>
+						<td th:text="${order_name}"></td>
+						<td th:text="${item_index}"></td>
+						<td th:text="${item_rent_time}+'個月'"></td>
+						<td th:text="${start}"></td>
+						<td th:text="${end}"></td>
+						<td th:text="${price}+'元'"></td>
+					</tr>
+				</table>
+			</div><!-- col-12 col-md-12 -->
+			<div class="col-12 col-md-6">
+				<img th:src="@{'images/pic'+${item_index}+'.jpg'}" width="95%" height="95%">
+			</div><!-- col-md-6 -->
+			<div class="col-12 col-md-6 pt-5">
+				<form th:action="@{/withdraw_receive}" method="post">
+					<br>
+					<table class="table">
+						<tr>
+							<td align="center">選擇退租時間</td>
+							<td>
+								<div class="input-group has-validation">
+      								<input type="text" class="form-control datepicker" th:name="AlterEnd" id="validationCustomUsername" th:value="${AlterStart}"
+      								readonly="readonly" placeholder="點擊選擇日期" aria-describedby="inputGroupPrepend" required>
+      								<!-- 設置readonly屬性，使用者就不能在狀態列輸入日期，避免使用者亂打導致程式無法判斷 -->
+    							</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="input-group">
+									<button type="reset" class="input-group btn btn-warning">重設</button>
+								</div>
+							</td>
+							<td>
+								<div class="input-group">
+									<button type="submit" class="input-group btn btn-success">送出</button>
+								</div>
+							</td>
+						</tr>
+					</table>
+					<input type="hidden" th:name="order_name" th:value="${order_name}">
+					<input type="hidden" th:name="item_index" th:value="${item_index}">
+				</form>
+			</div><!-- col-12 col-md-6 pt-5 -->
+		</div><!-- row -->
+	</div><!-- div_all -->
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		$(document).ready(function(){
+			$(".datepicker").datepicker({
+				format:"yyyy-mm-dd",             
+				autoclose:true,                  
+				weekStart:1,                     
+				startDate:/*[[${AlterStart}]]*/"1996-07-22",          
+				endDate:/*[[${end}]]*/"2099-12-31",
+				orientation:"bottom"
+			});
+		});
+		/*]]>*/
+	</script>
+</body>
+</html>
