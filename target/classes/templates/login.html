@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!-- 引用thymeleaf模板引擎 -->
+<html xmlns:th="http://www.thymeleaf.org" class="h-100">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>會員登入</title>
+	<!-- 引用Bootstrap -->
+	<link rel="stylesheet" href="assets/dist/css/bootstrap.min.css">
+	<script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- 引用jQuery -->
+	<script src="scripts/jquery.min.js"></script>
+	<script src="scripts/jquery.cookie.js"></script>
+	<!-- 引用外部javascript -->
+	<script src="scripts/GetCookie.js"></script>
+	<script src="scripts/SetCookie.js"></script>
+	<!-- 下拉式選單 -->
+	<script src="scripts/popper.min.js"></script>
+	<!-- Bootstrap時間挑選器 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
+	<!-- 彈跳視窗樣式 -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="sweetalert2.all.min.js"></script>
+	<style>
+		body{
+			background-color:rgba(225,245,241,0.947);
+			/*
+            background-image:url("images/back.png");
+            background-size:cover;
+            background-repeat:repeat no-repeat;
+            */
+        }
+        #loginform{
+        	margin-top:75px;
+        }
+	</style>
+</head>
+<body class="d-flex flex-column h-100">
+	<!-- 標題導覽列 -->
+	<header>
+		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+			<div class="container-fluid text-light">
+				<span class="navbar-brand">會員登入</span>
+      			<ul class="navbar-nav me-auto mb-0 mb-md-0">
+          			<li class="nav-item">
+            			<a class="nav-link" th:href="@{/}">回到首頁</a>
+          			</li>
+        		</ul>
+    		</div><!-- container-fluid -->
+		</nav>
+	</header>
+	<!-- 表單內容 -->
+	<div class="container" id="loginform" align="center">
+		<div class="row">
+			<div class="col-1 col-md-3"></div><!-- 空白部分 -->
+			<div class="col-10 col-md-6">
+				<form th:action="@{/login_verify}" method="post">
+					<table class="table">
+						<tr>
+							<td><h4>帳號</h4></td>
+							<td>
+								<div class="input-group">
+									<input type="text" class="form-control" style="width:70%;" th:name="account" placeholder="請輸入帳號">
+								</div>
+							</td>
+						</tr><!-- 第一列 -->
+						<tr>
+							<td><h4>密碼</h4></td>
+							<td>
+								<div class="input-group">
+									<input type="password" class="form-control" style="width:70%;" th:name="password" placeholder="請輸入密碼">
+								</div>
+							</td>
+						</tr><!-- 第二列 -->
+						<tr>
+							<td><button type="reset" class="btn btn-outline-dark">重設</button></td>
+							<td>
+								<button type="submit" class="btn btn-outline-dark">登入</button>&nbsp;&nbsp;
+								<input type="checkbox" class="btn-check" th:name="remember_me" th:value="yes" id="btn-check-outlined" autocomplete="off">
+								<label class="btn btn-outline-primary" for="btn-check-outlined">記住我</label>
+							</td>
+						</tr><!-- 第三列 -->
+						<tr>
+							<td><a th:href="@{/}" class="link-primary">忘記密碼</a></td>
+							<td><a th:href="@{/register}" class="link-primary">沒有會員？前往註冊</a></td>
+						</tr><!-- 第四列 -->
+					</table>
+				</form>
+			</div>
+			<div class="col-1 col-md-3"></div><!-- 空白部分 -->
+		</div><!-- row -->
+	</div><!-- loginform -->
+</body>
+</html>

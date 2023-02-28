@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<!-- 引用thymeleaf模板引擎 -->
+<html xmlns:th="http://www.thymeleaf.org" class="h-100">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>商品總覽</title>
+	<!-- 引用Bootstrap -->
+	<link rel="stylesheet" href="assets/dist/css/bootstrap.min.css">
+	<script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- 引用jQuery -->
+	<script src="scripts/jquery.min.js"></script>
+	<script src="scripts/jquery.cookie.js"></script>
+	<!-- 引用外部javascript -->
+	<script src="scripts/GetCookie.js"></script>
+	<script src="scripts/SetCookie.js"></script>
+	<!-- 下拉式選單 -->
+	<script src="scripts/popper.min.js"></script>
+	<!-- Bootstrap時間挑選器 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
+	<!-- 彈跳視窗樣式 -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="sweetalert2.all.min.js"></script>
+	<style>
+		body{
+			background-color:rgba(225,245,241,0.947);
+			/*
+            background-image:url("images/back.png");
+            background-size:cover;
+            background-repeat:repeat no-repeat;
+            */
+        }
+        #div_all{
+        	margin-top:75px;
+        }
+	</style>
+</head>
+<body class="d-flex flex-column h-100">
+	<!-- 標題導覽列 -->
+	<header>
+		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+			<div class="container-fluid">
+      			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        			<span class="navbar-toggler-icon"></span>
+      			</button>
+      			<div class="collapse navbar-collapse" id="navbarCollapse">
+      				<span class="navbar-brand">商品總覽</span>
+        			<ul class="navbar-nav me-auto mb-0 mb-md-0">
+          				<li class="nav-item">
+            				<a class="nav-link" aria-current="page" th:href="@{/}">返回首頁</a>
+          				</li>
+          				<li class="nav-item">
+            				<a class="nav-link" th:href="@{/login}">會員中心</a>
+          				</li>
+          				<li class="nav-item">
+            				<a class="nav-link" th:href="@{/cart}">前往購物車</a>
+          				</li>
+        			</ul>
+       				<div class="dropdown me-2">
+						<button type="button" class="btn btn-outline-light dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">種類</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" id="ul_button1">
+ 							<li>
+   								<a class="dropdown-item" th:href="@{/select}" onclick="javascript:AddSelection1();"><!-- 點擊超連結時順便增加cookie -->
+   									<script>
+   										function AddSelection1(){
+    										document.cookie="select=bed";
+    									}
+    								</script>
+    							床
+    							</a>
+    						</li>
+    						<li>
+    							<a class="dropdown-item" th:href="@{/select}" onclick="javascript:AddSelection2();">
+    								<script>
+    									function AddSelection2(){
+    										document.cookie="select=table";
+    									}
+    								</script>
+    							桌子
+    							</a>
+    						</li>
+    						<li>
+    							<a class="dropdown-item" th:href="@{/select}" onclick="javascript:AddSelection3();">
+    								<script>
+    									function AddSelection3(){
+    										document.cookie="select=refrigerator";
+    									}
+    								</script>
+    							冰箱
+    							</a>
+    						</li>
+    						<li>
+    							<a class="dropdown-item" th:href="@{/select}" onclick="javascript:AddSelection4();">
+    								<script>
+    									function AddSelection4(){
+    										document.cookie="select=television";
+    									}
+    								</script>
+    							電視
+    							</a>
+    						</li>
+    						<li>
+    							<a class="dropdown-item" th:href="@{/select}" onclick="javascript:AddSelection5();">
+    								<script>
+    									function AddSelection5(){
+    										document.cookie="select=air_conditioner";
+    									}
+    								</script>
+    							冷氣
+    							</a>
+    						</li>
+    						<li>
+    							<a class="dropdown-item" th:href="@{/select}" onclick="javascript:AddSelection6();">
+    								<script>
+    									function AddSelection6(){
+    										document.cookie="select=laundry_machine";
+    									}
+    								</script>
+    							洗衣機
+    							</a>
+    						</li>
+  						</ul>
+					</div><!-- dropdown me-2 -->
+					<div class="dropdown me-5">
+  						<button type="button" class="btn btn-outline-light dropdown-toggle" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">價格</button>
+	  					<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2" id="ul_button2">
+    						<li>
+    							<a class="dropdown-item" th:href="@{/select}" onclick="javascript:AddSelection7();">
+    								<script>
+    									function AddSelection7(){
+    										document.cookie="select=low_price";
+    									}
+    								</script>
+	    						低價位(250元以下)
+    							</a>
+    						</li>
+    						<li>
+    							<a class="dropdown-item" th:href="@{/select}" onclick="javascript:AddSelection8();">
+    								<script>
+    									function AddSelection8(){
+    										document.cookie="select=medium_price";
+    									}
+	    							</script>
+    							中價位(250~500元)
+    							</a>
+    						</li>
+    						<li>
+    							<a class="dropdown-item" th:href="@{/select}" onclick="javascript:AddSelection9();">
+    								<script>
+    									function AddSelection9(){
+    										document.cookie="select=high_price";
+    									}
+ 	   							</script>
+    							高價位(500元以上)
+    							</a>
+    						</li>
+  						</ul>
+					</div><!-- dropdown me-5 -->
+					<div class="me-5"></div>
+      			</div><!-- collapse -->
+    		</div><!-- container-fluid -->
+		</nav>
+	</header>
+	<!-- 顯示商品圖片 -->
+    <div class="container" id="div_all" th:object="${CommodityTable}">
+    	<div class="row">
+			<div class="col-12 col-md-6 col-xl-4" th:each="CommodityRow:${CommodityTable}">
+				<a th:href="@{/detail}">
+					<img th:src="@{'/images/pic'+${CommodityRow.get_item_index()}+'.jpg'}" width="90%" height="90%" class="rounded" th:id="'pic'+${CommodityRow.get_item_index()}">
+				</a>
+				<script th:inline="javascript">
+					/*<![CDATA[*/
+    				var id=/*[[${CommodityRow.get_item_index()}]]*/ "No static usage";
+			        $("#pic"+id).click(function(){
+			            document.cookie="product="+/*[[${CommodityRow.get_item_index()}]]*/"0";
+			        });
+					/*]]>*/
+				</script>
+			</div><!-- col-12 col-md-6 col-xl-4 -->
+    	</div><!-- row -->
+    </div><!-- container -->
+    <script>
+    	/*使用jQuery與Bootstrap來控制下拉選單*/
+    	$(document).ready(function(){
+        	$("#dropdownMenuButton1").click(function(){
+            	$("#ul_button1").toggle(500);
+        	});
+        	$("#dropdownMenuButton2").click(function(){
+            	$("#ul_button2").toggle(500);
+        	});
+    	});
+    </script>
+</body>
+</html>
