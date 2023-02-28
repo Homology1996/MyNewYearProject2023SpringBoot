@@ -1,0 +1,3 @@
+使用xampp的MariaDB
+
+使用者帳號密碼皆為newyear
