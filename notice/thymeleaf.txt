@@ -1,0 +1,59 @@
+
+使用thymeleaf模板引擎
+-------------------------------
+
+1:在pom.xml添加thymeleaf dependency
+找到<dependencies>...</dependencies>。並加入以下代碼
+<!-- Template Engine: thymeleaf -->
+		<dependency>
+      		<groupId>org.springframework.boot</groupId>
+      		<artifactId>spring-boot-starter-thymeleaf</artifactId>
+    	</dependency>
+
+2:修改Java Resources/src/main/resources/application.properties以設定thymeleaf config
+加入以下指令
+# For thymeleaf
+spring.thymeleaf.cache=false
+spring.thymeleaf.prefix=classpath:/templates/
+spring.thymeleaf.suffix=.html
+spring.web.resources.static-locations=classpath:/static/
+
+3:在src/main/resources/templates增加一個html檔案
+(在新增檔案時，路徑記得要手動挑選)
+例如:
+thymeleaf_HelloWorld.html
+內容
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"><!-- thymeleaf模板 -->
+<head>
+<meta charset="UTF-8">
+<title>thymeleaf</title>
+</head>
+<body>
+	<h1>Hello World from thymeleaf</h1>
+</body>
+</html>
+
+4:在src/main/java/com/example/demo底下增加一個class，並在裡面增加一個呼叫步驟3頁面的方法
+例如:
+Package=com.example.demo.controller(要包含在com.example.demo裡面)，Name=Call_thymeleaf_HelloWorld.java，不用勾選主方法
+內容
+package com.example.demo.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class Call_thymeleaf_HelloWorld {
+	@GetMapping("/To_thymeleaf_HelloWorld")/*呼叫此controller的get request*/
+    public String to_thymeleaf_helloworld() {
+        return "thymeleaf_HelloWorld"; /*要導入的html名稱，而且只能是html檔案*/
+    } 
+}
+
+5:Run As->Spring Boot App->開啟瀏覽器並輸入 http://localhost:8080/呼叫mapping路徑
+例如http://localhost:8080/To_thymeleaf_HelloWorld
+
+註記:如果步驟四的controller想要增加在獨立的package，那就要在com.example.demo."專案名稱"Application.java加上下列指令
+@ComponentScan({"com.example.demo",要增加的package名稱})
+@EntityScan({"com.example.demo",要增加的package名稱})

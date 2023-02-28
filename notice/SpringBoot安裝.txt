@@ -1,0 +1,44 @@
+1:開啟Eclipse->Help->Eclipse MarketPlace
+2:搜尋STS並安裝Spring Tools 4
+3:搜尋Maven並安裝Eclipse m2e - Maven support in Eclipse IDE
+4:搜尋Maven integration並安裝 Maven (Java EE) Integration for Eclipse WTP
+5:新增專案:
+專案類型:Spring Boot->Spring Starter Project
+Type: Maven
+Packaging: War
+Java Version: 17
+Language: Java
+New Spring Starter Project Dependencies
+勾選Web/Spring Web
+
+#########################################################################
+
+在MVC架構中
+MC檔案會放在src/main/java
+V檔案會放在src/main/resources
+
+#########################################################################
+
+新增一個controller: HelloWorld
+1:在src/main/java/com.example.demo底下新增一個class，名稱為HelloWorld
+2:編輯內容
+package com.example.demo;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController /*讓系統辨識此檔案為Spring Boot中的controller*/
+public class SpringBootHelloWorld {
+
+	public static void main(String[] args) {
+
+	}
+	@RequestMapping("/")
+	public String HelloWorld(){
+		return "Hello World from Spring Boot~";
+	}
+}
+3:對專案按右鍵->Run As->Spring Boot App
+4:Select Java Application:選擇要執行的程式。這裡挑選 "專案名稱"+Application
+5:看到console畫面最後一行有出現 Started "專案名稱"+Application... 代表已成功開啟
+6:開啟瀏覽器並輸入 http://localhost:8080/
